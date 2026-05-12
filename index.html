@@ -1,0 +1,1471 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HE's Blog</title>
+  <style>
+    /* ========== CSS Variables & Reset ========== */
+    :root {
+      --bg: #ffffff;
+      --bg-secondary: #f8f9fa;
+      --text: #1a1a2e;
+      --text-secondary: #6c757d;
+      --accent: #4361ee;
+      --accent-hover: #3a56d4;
+      --card-bg: #ffffff;
+      --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.06);
+      --card-shadow-hover: 0 10px 30px rgba(0, 0, 0, 0.1);
+      --border: #e9ecef;
+      --tag-bg: #eef0ff;
+      --tag-text: #4361ee;
+      --code-bg: #f1f3f5;
+      --max-width: 1200px;
+      --header-height: 64px;
+      --transition: 0.3s ease;
+    }
+
+    [data-theme="dark"] {
+      --bg: #0f0f23;
+      --bg-secondary: #1a1a35;
+      --text: #e4e4f0;
+      --text-secondary: #9b9bb5;
+      --accent: #6c8cff;
+      --accent-hover: #85a0ff;
+      --card-bg: #1a1a35;
+      --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+      --card-shadow-hover: 0 10px 30px rgba(0, 0, 0, 0.4);
+      --border: #2a2a4a;
+      --tag-bg: #2a2a5a;
+      --tag-text: #8ca3ff;
+      --code-bg: #1e1e3a;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans SC", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      transition: background var(--transition), color var(--transition);
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+      transition: color var(--transition);
+    }
+    a:hover { color: var(--accent-hover); }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* ========== Header / Nav ========== */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: var(--header-height);
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      z-index: 1000;
+      transition: background var(--transition), border-color var(--transition);
+    }
+    [data-theme="dark"] header {
+      background: rgba(15, 15, 35, 0.85);
+    }
+
+    .nav-inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.5px;
+    }
+    .logo span { color: var(--accent); }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      list-style: none;
+    }
+    .nav-links a {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      font-weight: 500;
+      position: relative;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--accent);
+      transition: width var(--transition);
+    }
+    .nav-links a:hover::after,
+    .nav-links a.active::after { width: 100%; }
+    .nav-links a.active { color: var(--text); }
+
+    .theme-toggle {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      width: 36px;
+      height: 36px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      color: var(--text);
+      transition: all var(--transition);
+    }
+    .theme-toggle:hover {
+      border-color: var(--accent);
+      background: var(--tag-bg);
+    }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 4px;
+    }
+    .hamburger span {
+      width: 24px;
+      height: 2px;
+      background: var(--text);
+      border-radius: 2px;
+      transition: all var(--transition);
+    }
+
+    /* ========== Main Layout ========== */
+    .container {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    main {
+      padding-top: calc(var(--header-height) + 40px);
+      padding-bottom: 60px;
+    }
+
+    /* ========== Hero Section ========== */
+    .hero {
+      text-align: center;
+      padding: 60px 0 48px;
+    }
+    .hero h1 {
+      font-size: 2.8rem;
+      font-weight: 800;
+      letter-spacing: -1px;
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+    .hero h1 span { color: var(--accent); }
+    .hero p {
+      color: var(--text-secondary);
+      font-size: 1.15rem;
+      max-width: 560px;
+      margin: 0 auto 24px;
+    }
+
+    .hero-stats {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      margin-top: 32px;
+    }
+    .hero-stats .stat {
+      text-align: center;
+    }
+    .hero-stats .num {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--accent);
+    }
+    .hero-stats .label {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+
+    /* ========== Blog Layout ========== */
+    .blog-layout {
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: 48px;
+      margin-top: 24px;
+    }
+
+    /* ========== Blog Posts ========== */
+    .posts-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 28px;
+    }
+    .posts-header h2 {
+      font-size: 1.5rem;
+    }
+    .posts-header .count {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
+    .post-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      transition: all var(--transition);
+      box-shadow: var(--card-shadow);
+      margin-bottom: 24px;
+    }
+    .post-card:hover {
+      box-shadow: var(--card-shadow-hover);
+      transform: translateY(-2px);
+    }
+
+    .post-cover {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      background: linear-gradient(135deg, var(--accent), #7209b7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .post-body {
+      padding: 24px;
+    }
+
+    .post-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .post-tags .tag {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      background: var(--tag-bg);
+      color: var(--tag-text);
+    }
+
+    .post-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      line-height: 1.4;
+    }
+    .post-title a {
+      color: var(--text);
+    }
+    .post-title a:hover { color: var(--accent); }
+
+    .post-excerpt {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+
+    .post-meta {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+    .post-meta .avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .post-meta .sep { color: var(--border); }
+
+    /* ========== Sidebar ========== */
+    .sidebar {
+      position: sticky;
+      top: calc(var(--header-height) + 32px);
+      align-self: start;
+    }
+
+    .sidebar-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: var(--card-shadow);
+    }
+    .sidebar-card h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--accent);
+    }
+
+    /* About widget */
+    .about-widget {
+      text-align: center;
+    }
+    .about-avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), #7209b7);
+      margin: 0 auto 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      color: #fff;
+    }
+    .about-widget h4 {
+      font-size: 1.1rem;
+      margin-bottom: 4px;
+    }
+    .about-widget p {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+    .about-social {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 14px;
+    }
+    .about-social a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      transition: all var(--transition);
+    }
+    .about-social a:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--tag-bg);
+    }
+
+    /* Category list */
+    .category-list { list-style: none; }
+    .category-list li {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.9rem;
+    }
+    .category-list li:last-child { border-bottom: none; }
+    .category-list .count {
+      background: var(--tag-bg);
+      color: var(--tag-text);
+      padding: 0 8px;
+      border-radius: 4px;
+      font-size: 0.8rem;
+    }
+
+    /* Recent posts sidebar */
+    .recent-list { list-style: none; }
+    .recent-list li {
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .recent-list li:last-child { border-bottom: none; }
+    .recent-list a {
+      color: var(--text);
+      font-size: 0.9rem;
+      line-height: 1.4;
+      display: block;
+    }
+    .recent-list a:hover { color: var(--accent); }
+    .recent-list .date {
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      margin-top: 2px;
+    }
+
+    /* Tag cloud */
+    .tag-cloud {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .tag-cloud .tag {
+      padding: 4px 12px;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      background: var(--tag-bg);
+      color: var(--tag-text);
+      transition: all var(--transition);
+      cursor: pointer;
+    }
+    .tag-cloud .tag:hover {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    /* ========== Newsletter ========== */
+    .newsletter {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 36px;
+      text-align: center;
+      margin-top: 24px;
+    }
+    .newsletter h3 {
+      font-size: 1.3rem;
+      margin-bottom: 8px;
+    }
+    .newsletter p {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-bottom: 20px;
+    }
+    .newsletter-form {
+      display: flex;
+      max-width: 420px;
+      margin: 0 auto;
+      gap: 8px;
+    }
+    .newsletter-form input {
+      flex: 1;
+      padding: 10px 16px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 0.9rem;
+      outline: none;
+      transition: border var(--transition);
+    }
+    .newsletter-form input:focus {
+      border-color: var(--accent);
+    }
+    .newsletter-form button {
+      padding: 10px 20px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background var(--transition);
+      white-space: nowrap;
+    }
+    .newsletter-form button:hover {
+      background: var(--accent-hover);
+    }
+
+    /* ========== Footer ========== */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 0;
+      text-align: center;
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+    }
+    footer .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 12px;
+    }
+    footer .footer-links a {
+      color: var(--text-secondary);
+    }
+    footer .footer-links a:hover { color: var(--accent); }
+
+    /* ========== Pagination ========== */
+    .pagination {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 36px;
+    }
+    .pagination a, .pagination span {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      border: 1px solid var(--border);
+      color: var(--text);
+      transition: all var(--transition);
+    }
+    .pagination a:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    .pagination .active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+
+    /* ========== Scroll to Top ========== */
+    .scroll-top {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      font-size: 1.2rem;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(67, 97, 238, 0.35);
+      transition: all var(--transition);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      z-index: 999;
+    }
+    .scroll-top.show {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    .scroll-top:hover {
+      background: var(--accent-hover);
+      transform: translateY(-2px);
+    }
+
+    /* ========== Loading Skeleton ========== */
+    .skeleton {
+      background: linear-gradient(90deg, var(--border) 25%, var(--bg-secondary) 50%, var(--border) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+      border-radius: 8px;
+    }
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    /* ========== Reading Progress Bar ========== */
+    .reading-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 0%;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), #7209b7);
+      z-index: 1001;
+      transition: width 0.1s linear;
+    }
+
+    /* ========== Search Bar ========== */
+    .search-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 8px 14px;
+      transition: border var(--transition);
+      max-width: 260px;
+    }
+    .search-bar:focus-within { border-color: var(--accent); }
+    .search-bar input {
+      border: none;
+      background: none;
+      outline: none;
+      color: var(--text);
+      font-size: 0.9rem;
+      width: 100%;
+    }
+    .search-bar .icon { color: var(--text-secondary); font-size: 0.9rem; }
+    .search-bar input::placeholder { color: var(--text-secondary); }
+
+    /* ========== Filter Chips ========== */
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 20px;
+      min-height: 0;
+    }
+    .filter-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      background: var(--accent);
+      color: #fff;
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+    .filter-chip:hover { opacity: 0.85; }
+    .filter-chip .close { font-size: 1rem; line-height: 1; }
+
+    /* ========== Active Filter States ========== */
+    .category-list li.active a { color: var(--accent); font-weight: 600; }
+    .category-list li.active .count { background: var(--accent); color: #fff; }
+    .tag-cloud .tag.active { background: var(--accent); color: #fff; }
+    .post-tags .tag { cursor: pointer; }
+    .post-tags .tag:hover { opacity: 0.8; }
+
+    /* ========== Post Card Clickable ========== */
+    .post-card { cursor: pointer; }
+
+    /* ========== Post Detail Modal ========== */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.55);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      opacity: 0;
+      visibility: hidden;
+      transition: all var(--transition);
+    }
+    .modal-overlay.open { opacity: 1; visibility: visible; }
+    .modal-content {
+      background: var(--bg);
+      border-radius: 16px;
+      max-width: 740px;
+      width: 100%;
+      max-height: 85vh;
+      overflow-y: auto;
+      padding: 40px;
+      position: relative;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      transform: translateY(24px) scale(0.97);
+      transition: transform var(--transition);
+    }
+    .modal-overlay.open .modal-content { transform: translateY(0) scale(1); }
+    .modal-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      color: var(--text);
+      transition: all var(--transition);
+    }
+    .modal-close:hover { border-color: var(--accent); background: var(--tag-bg); }
+    .modal-cover { font-size: 4rem; text-align: center; margin-bottom: 20px; }
+    .modal-title {
+      font-size: 1.6rem;
+      font-weight: 800;
+      line-height: 1.3;
+      margin-bottom: 12px;
+    }
+    .modal-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-bottom: 24px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+    .modal-meta .tag {
+      cursor: pointer;
+      color: var(--accent);
+    }
+    .modal-meta .tag:hover { text-decoration: underline; }
+    .modal-body {
+      font-size: 1rem;
+      line-height: 1.9;
+      color: var(--text);
+    }
+    .modal-body h3 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin: 28px 0 12px;
+    }
+    .modal-body p { margin-bottom: 16px; }
+    .modal-body ul { margin: 12px 0 16px 20px; }
+    .modal-body li { margin-bottom: 6px; }
+    .modal-body code {
+      background: var(--code-bg);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.9em;
+    }
+    .modal-body pre {
+      background: var(--code-bg);
+      padding: 16px;
+      border-radius: 8px;
+      overflow-x: auto;
+      margin: 16px 0;
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    /* ========== Empty State ========== */
+    .empty-state {
+      text-align: center;
+      padding: 48px 24px;
+      color: var(--text-secondary);
+    }
+    .empty-state .icon { font-size: 3rem; margin-bottom: 12px; }
+    .empty-state p { font-size: 1rem; margin-bottom: 4px; }
+    .empty-state .hint { font-size: 0.85rem; opacity: 0.7; }
+    .empty-state .clear-btn {
+      margin-top: 16px;
+      padding: 8px 20px;
+      border: 1px solid var(--accent);
+      border-radius: 8px;
+      background: none;
+      color: var(--accent);
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all var(--transition);
+    }
+    .empty-state .clear-btn:hover { background: var(--accent); color: #fff; }
+
+    /* ========== Responsive ========== */
+    @media (max-width: 900px) {
+      .blog-layout {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        position: static;
+      }
+      .hero h1 { font-size: 2.2rem; }
+    }
+
+    @media (max-width: 640px) {
+      .hamburger { display: flex; }
+
+      .nav-links {
+        position: fixed;
+        top: var(--header-height);
+        left: 0;
+        right: 0;
+        background: var(--bg);
+        border-bottom: 1px solid var(--border);
+        flex-direction: column;
+        padding: 16px 24px;
+        gap: 16px;
+        display: none;
+      }
+      .nav-links.open { display: flex; }
+
+      .hero { padding: 40px 0 32px; }
+      .hero h1 { font-size: 1.8rem; }
+      .hero p { font-size: 1rem; }
+      .hero-stats { gap: 24px; }
+
+      .post-cover { height: 160px; }
+      .post-body { padding: 18px; }
+      .post-title { font-size: 1.1rem; }
+
+      .newsletter { padding: 24px 18px; }
+      .newsletter-form { flex-direction: column; }
+
+      .scroll-top {
+        bottom: 16px;
+        right: 16px;
+        width: 40px;
+        height: 40px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== Header ===== -->
+  <header>
+    <div class="nav-inner">
+      <a href="#" class="logo">HE<span>'s</span> Blog</a>
+
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#" class="active">首页</a></li>
+        <li><a href="#">归档</a></li>
+        <li><a href="#">分类</a></li>
+        <li><a href="#">关于</a></li>
+        <li>
+          <button class="theme-toggle" id="themeToggle" aria-label="切换主题">
+            🌙
+          </button>
+        </li>
+      </ul>
+
+      <button class="hamburger" id="hamburger" aria-label="菜单">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ===== Reading Progress Bar ===== -->
+  <div class="reading-progress" id="readingProgress"></div>
+
+  <!-- ===== Main ===== -->
+  <main>
+    <div class="container">
+
+      <!-- Hero -->
+      <section class="hero">
+        <h1>探索技术，<span>记录思考</span></h1>
+        <p>一名全栈开发者的技术博客，分享前后端开发、系统设计与开源实践。</p>
+        <div class="hero-stats">
+          <div class="stat"><div class="num">18</div><div class="label">文章</div></div>
+          <div class="stat"><div class="num">6</div><div class="label">分类</div></div>
+          <div class="stat"><div class="num">23</div><div class="label">标签</div></div>
+        </div>
+      </section>
+
+      <!-- Blog Layout -->
+      <div class="blog-layout">
+
+        <!-- Posts Column -->
+        <div>
+          <div class="posts-header">
+            <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+              <h2>最新文章</h2>
+              <span class="count">共 18 篇</span>
+            </div>
+            <div class="search-bar">
+              <span class="icon">🔍</span>
+              <input type="text" id="searchInput" placeholder="搜索文章..." autocomplete="off" />
+            </div>
+          </div>
+
+          <div class="filter-bar" id="filterBar"></div>
+
+          <div id="postList"></div>
+
+          <!-- Pagination -->
+          <div class="pagination">
+            <a href="#">&laquo;</a>
+            <span class="active">1</span>
+            <a href="#">2</a>
+            <a href="#">3</a>
+            <a href="#">&raquo;</a>
+          </div>
+        </div>
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+          <!-- About -->
+          <div class="sidebar-card about-widget">
+            <div class="about-avatar">H</div>
+            <h4>HE</h4>
+            <p>全栈开发者，热爱开源与新技术。专注 Web 开发、云原生和系统设计。</p>
+            <div class="about-social">
+              <a href="#" title="GitHub">GH</a>
+              <a href="#" title="Twitter">X</a>
+              <a href="#" title="掘金">J</a>
+              <a href="#" title="RSS">R</a>
+            </div>
+          </div>
+
+          <!-- Categories -->
+          <div class="sidebar-card">
+            <h3>分类</h3>
+            <ul class="category-list" id="categoryList"></ul>
+          </div>
+
+          <!-- Recent Posts -->
+          <div class="sidebar-card">
+            <h3>近期文章</h3>
+            <ul class="recent-list" id="recentList"></ul>
+          </div>
+
+          <!-- Tags -->
+          <div class="sidebar-card">
+            <h3>热门标签</h3>
+            <div class="tag-cloud" id="tagCloud"></div>
+          </div>
+        </aside>
+      </div>
+
+      <!-- Newsletter -->
+      <section class="newsletter">
+        <h3>订阅 Newsletter</h3>
+        <p>每两周精选推送，不错过任何一篇好文。随时可退订。</p>
+        <form class="newsletter-form" id="newsletterForm">
+          <input type="email" placeholder="输入你的邮箱地址" required />
+          <button type="submit">订阅</button>
+        </form>
+      </section>
+    </div>
+  </main>
+
+  <!-- ===== Footer ===== -->
+  <footer>
+    <div class="container">
+      <div class="footer-links">
+        <a href="#">首页</a>
+        <a href="#">归档</a>
+        <a href="#">分类</a>
+        <a href="#">关于</a>
+        <a href="#">隐私政策</a>
+      </div>
+      <p>&copy; 2026 HE's Blog. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- ===== Scroll to Top ===== -->
+  <button class="scroll-top" id="scrollTop" aria-label="回到顶部">↑</button>
+
+  <!-- ===== Post Detail Modal ===== -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal-content">
+      <button class="modal-close" id="modalClose">✕</button>
+      <div class="modal-cover"></div>
+      <h1 class="modal-title"></h1>
+      <div class="modal-meta"></div>
+      <div class="modal-body"></div>
+    </div>
+  </div>
+
+  <!-- ===== JavaScript ===== -->
+  <script>
+    // ========================================
+    // Application State
+    // ========================================
+    const state = {
+      category: '',
+      tag: '',
+      query: '',
+      page: 1,
+      pageSize: 3,
+      searchTimer: null
+    };
+
+    // ========================================
+    // Data
+    // ========================================
+    const posts = [
+      {
+        id: 1,
+        title: '深入理解 React 18 并发模式',
+        excerpt: 'React 18 引入的并发渲染机制彻底改变了 UI 更新的方式。本文深入剖析 Concurrent Mode 的工作原理、Suspense 的最佳实践以及 Transition 的巧妙用法。',
+        date: '2026-05-10',
+        tags: ['React', 'JavaScript', '前端'],
+        category: '前端开发',
+        cover: '⚛️',
+        readingTime: 8,
+        content: '<h3>什么是并发模式？</h3><p>React 18 最引人注目的特性就是引入了并发渲染（Concurrent Rendering）机制。简单来说，它让 React 能够同时准备多个版本的 UI，并在合适的时机选择最合适的那个进行渲染。</p><p>在传统的同步渲染中，一旦开始渲染就无法中断。这意味着如果某个更新需要大量计算，主线程会被阻塞，导致用户无法与页面交互。并发模式通过将渲染工作拆分成可中断的小块来解决这个问题。</p><h3>关键 API 与实践</h3><p><code>useTransition</code> 允许你将某些更新标记为低优先级。例如，当用户在搜索框中输入时，输入框的更新是高优先级的，而搜索结果的更新可以被降级：</p><pre>const [isPending, startTransition] = useTransition();\nstartTransition(() => {\n  setSearchQuery(input);\n});</pre><p><code>useDeferredValue</code> 则让你可以延迟某个值的更新，类似防抖但更加智能：</p><pre>const deferredQuery = useDeferredValue(query);</pre><h3>Suspense 的进化</h3><p>React 18 中的 Suspense 不再局限于代码分割。它可以用于数据获取，配合 Suspense 组件，你可以声明式地处理加载状态，让组件等待数据准备好再渲染。</p><p>并发模式 + Suspense 的组合使得 React 应用可以拥有更流畅的用户体验。关键在于理解"渲染是可以中断的"这一心智模型的转变。</p>'
+      },
+      {
+        id: 2,
+        title: '从零搭建 TypeScript 工具库',
+        excerpt: '一篇完整的 TypeScript 工具库开发指南，涵盖项目初始化、Rollup 打包、单元测试、API 文档生成以及 npm 发布的全流程。',
+        date: '2026-05-05',
+        tags: ['TypeScript', 'Node.js', '工程化'],
+        category: '工程化',
+        cover: '📦',
+        readingTime: 10,
+        content: '<h3>项目初始化</h3><p>使用 <code>npm init</code> 初始化项目后，安装 TypeScript 及相关依赖。推荐使用 <code>tsup</code> 或 <code>Rollup</code> 作为打包工具，它们对 TypeScript 有原生支持。</p><pre>npm init -y\nnpm install typescript tsup @types/node -D\nnpx tsc --init</pre><h3>Rollup 配置</h3><p>Rollup 的配置需要处理 TypeScript 编译、CommonJS 兼容以及产物输出格式。建议同时输出 ESM 和 CJS 两种格式：</p><pre>import typescript from \'@rollup/plugin-typescript\';\nexport default {\n  input: \'src/index.ts\',\n  output: [\n    { file: \'dist/index.js\', format: \'cjs\' },\n    { file: \'dist/index.mjs\', format: \'esm\' }\n  ],\n  plugins: [typescript()]\n};</pre><h3>单元测试与文档</h3><p>使用 Vitest 进行单元测试，它兼容 Jest API 但速度更快。API 文档推荐使用 TypeDoc 自动生成，从 JSDoc 注释中提取文档内容。</p><p>最后，配置 <code>package.json</code> 中的 <code>main</code>、<code>module</code> 和 <code>types</code> 字段，确保消费者能正确引入你的库。</p>'
+      },
+      {
+        id: 3,
+        title: 'Go 并发编程：从入门到实践',
+        excerpt: 'Goroutine 与 Channel 是 Go 并发编程的基石。通过实际案例理解 CSP 模型、并发模式以及常见的陷阱与最佳实践。',
+        date: '2026-04-28',
+        tags: ['Go', '并发', '后端'],
+        category: '后端开发',
+        cover: '🦫',
+        readingTime: 12,
+        content: '<h3>CSP 模型</h3><p>Go 语言的并发哲学源自 CSP（Communicating Sequential Processes）模型。核心思想是：<strong>不要通过共享内存来通信，而应该通过通信来共享内存</strong>。</p><p>Goroutine 是轻量级线程，由 Go 运行时调度。创建 Goroutine 的开销极小，你可以轻松启动成千上万个：</p><pre>go func() {\n  fmt.Println("Hello from goroutine")\n}()</pre><h3>Channel 的使用</h3><p>Channel 是 Goroutine 之间的通信桥梁。有缓冲和无缓冲 Channel 适用于不同的场景：</p><pre>ch := make(chan int, 10)\ngo func() {\n  for i := 0; i < 10; i++ { ch <- i }\n  close(ch)\n}()\nfor v := range ch { fmt.Println(v) }</pre><h3>常见模式与陷阱</h3><p><strong>Fan-out / Fan-in</strong> 模式：多个 Goroutine 从同一个 Channel 读取（fan-out），然后将结果合并到另一个 Channel（fan-in）。这是构建 Pipeline 的基础。</p><p><strong>陷阱</strong>：向已关闭的 Channel 写入会 panic；不关闭 Channel 会导致 Goroutine 泄漏。使用 <code>sync.WaitGroup</code> 等待 Goroutine 完成，使用 <code>context.Context</code> 传递取消信号。</p>'
+      },
+      {
+        id: 4,
+        title: 'CSS Container Queries 实战指南',
+        excerpt: '容器查询终于来了！告别媒体查询的局限，学习如何基于容器尺寸实现真正的组件级响应式设计。',
+        date: '2026-04-20',
+        tags: ['CSS', '前端', '响应式'],
+        category: '前端开发',
+        cover: '🎨',
+        readingTime: 7,
+        content: '<h3>为什么需要容器查询？</h3><p>媒体查询（Media Queries）基于视口尺寸来判断布局，这在组件化开发中存在一个根本问题：一个组件在宽屏侧边栏和全宽主内容区中表现应该不同，但媒体查询无法感知组件所在容器的尺寸。</p><p>容器查询（Container Queries）允许你基于父容器的尺寸来应用样式，真正实现了组件级的响应式设计。</p><h3>基本用法</h3><p>首先在容器上声明一个包含上下文：</p><pre>.card-container {\n  container-type: inline-size;\n  container-name: card;\n}</pre><p>然后使用 <code>@container</code> 编写容器查询：</p><pre>@container card (min-width: 400px) {\n  .card { display: grid; grid-template-columns: 1fr 2fr; }\n}</pre><h3>实际应用场景</h3><p>日历组件、数据表格、卡片列表……任何需要在不同容器尺寸下自适应布局的组件都能从中受益。结合 CSS Grid 和 <code>clamp()</code> 函数，可以构建出真正的弹性设计系统。</p>'
+      },
+      {
+        id: 5,
+        title: 'Kubernetes 集群监控体系搭建',
+        excerpt: '使用 Prometheus + Grafana + AlertManager 构建完整的 K8s 监控体系，涵盖指标采集、可视化仪表盘与告警规则配置。',
+        date: '2026-04-12',
+        tags: ['Kubernetes', 'DevOps', '监控'],
+        category: '云原生',
+        cover: '☸️',
+        readingTime: 15,
+        content: '<h3>架构概览</h3><p>一套完整的 K8s 监控体系包含三个核心组件：Prometheus 负责指标采集与存储，Grafana 提供可视化仪表盘，AlertManager 处理告警通知。</p><p>推荐使用 <code>kube-prometheus-stack</code> Helm Chart 一键部署，它会自动配置好 Node Exporter、Kube-State-Metrics 等必要组件。</p><h3>核心指标</h3><p>需要关注的关键指标包括：</p><ul><li>集群资源：CPU/Memory 使用率、节点状态、Pod 状态</li><li>API Server：请求延迟、错误率、吞吐量</li><li>etcd：Leader 变更、磁盘 fsync 延迟</li><li>容器级别：CPU Throttling、OOM Kill 事件</li></ul><h3>告警规则配置</h3><pre>groups:\n- name: node-alerts\n  rules:\n  - alert: NodeHighMemoryUsage\n    expr: (1 - node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes) > 0.9\n    for: 5m\n    labels: { severity: critical }\n    annotations:\n      summary: "Node {{ $labels.instance }} 内存使用率超过 90%"</pre><p>告警路由配置可以将不同级别的告警发送到对应渠道——critical 发 PagerDuty，warning 发 Slack。</p>'
+      },
+      {
+        id: 6,
+        title: '设计模式在 Node.js 中的优雅应用',
+        excerpt: '观察者模式、策略模式、装饰器模式……这些经典设计模式在 Node.js 中如何落地？结合实际场景讲解设计模式的应用之道。',
+        date: '2026-04-05',
+        tags: ['Node.js', '设计模式', '后端'],
+        category: '后端开发',
+        cover: '📐',
+        readingTime: 9,
+        content: '<h3>观察者模式：EventEmitter</h3><p>Node.js 核心模块 <code>events</code> 本身就是观察者模式的实现。EventEmitter 让你可以方便地实现事件驱动的架构：</p><pre>const EventEmitter = require(\'events\');\nclass OrderService extends EventEmitter {\n  createOrder(data) {\n    this.emit(\'order:created\', order);\n  }\n}\nconst service = new OrderService();\nservice.on(\'order:created\', (order) => {\n  // 发送确认邮件、更新库存等\n});</pre><h3>策略模式：认证中间件</h3><p>当需要支持多种认证方式时，策略模式可以避免大量的条件分支：</p><pre>const strategies = {\n  jwt: (token) => jwt.verify(token, SECRET),\n  oauth: (token) => oauth.verify(token),\n  basic: (creds) => basicAuth(creds)\n};\nfunction authenticate(type, credentials) {\n  return strategies[type](credentials);\n}</pre><h3>装饰器模式：中间件</h3><p>Express/Koa 的中间件机制就是装饰器模式的体现。每个中间件在请求处理前后添加行为，层层嵌套实现功能组合。</p><p>理解设计模式的关键不是死记硬背 UML 图，而是识别代码中的"变"与"不变"，用模式应对变化的部分。</p>'
+      }
+    ];
+
+    const categories = [
+      { name: '前端开发', count: 6 },
+      { name: '后端开发', count: 4 },
+      { name: '云原生', count: 3 },
+      { name: '工程化', count: 2 },
+      { name: '算法', count: 2 },
+      { name: '阅读笔记', count: 1 }
+    ];
+
+    const tags = [
+      'React', 'TypeScript', 'Go', 'CSS', 'Kubernetes', 'Node.js',
+      'JavaScript', 'DevOps', '设计模式', '并发', 'Git', 'Rust',
+      'Docker', 'PostgreSQL', 'Redis', 'Vue', 'Python', '架构',
+      '测试', '性能优化', 'Webpack', 'Linux', 'AI'
+    ];
+
+    // ========================================
+    // Derived Data
+    // ========================================
+    function getFilteredPosts() {
+      return posts.filter(p => {
+        if (state.category && p.category !== state.category) return false;
+        if (state.tag && !p.tags.includes(state.tag)) return false;
+        if (state.query) {
+          const q = state.query.toLowerCase();
+          return p.title.toLowerCase().includes(q) ||
+                 p.tags.some(t => t.toLowerCase().includes(q));
+        }
+        return true;
+      });
+    }
+
+    function totalPages() {
+      return Math.max(1, Math.ceil(getFilteredPosts().length / state.pageSize));
+    }
+
+    function currentPagePosts() {
+      const all = getFilteredPosts();
+      const start = (state.page - 1) * state.pageSize;
+      return all.slice(start, start + state.pageSize);
+    }
+
+    // ========================================
+    // Render: Post Cards
+    // ========================================
+    function renderPosts() {
+      const container = document.getElementById('postList');
+      const fp = getFilteredPosts();
+      const cp = currentPagePosts();
+
+      if (fp.length === 0) {
+        container.innerHTML = emptyStateHTML();
+        return;
+      }
+
+      container.innerHTML = cp.map(post => `
+        <article class="post-card" data-id="${post.id}">
+          <div class="post-cover">${post.cover}</div>
+          <div class="post-body">
+            <div class="post-tags">
+              ${post.tags.map(t => '<span class="tag" data-tag="' + t + '">' + t + '</span>').join('')}
+            </div>
+            <h2 class="post-title"><a href="#">${post.title}</a></h2>
+            <p class="post-excerpt">${post.excerpt}</p>
+            <div class="post-meta">
+              <span class="avatar">H</span>
+              <span>HE</span>
+              <span class="sep">·</span>
+              <span>${post.date}</span>
+              <span class="sep">·</span>
+              <span>${post.readingTime} min read</span>
+            </div>
+          </div>
+        </article>
+      `).join('');
+    }
+
+    // ========================================
+    // Render: Categories
+    // ========================================
+    function renderCategories() {
+      const container = document.getElementById('categoryList');
+      container.innerHTML = categories.map(cat => `
+        <li class="${state.category === cat.name ? 'active' : ''}" data-category="${cat.name}">
+          <a href="#">${cat.name}</a><span class="count">${cat.count}</span>
+        </li>
+      `).join('');
+    }
+
+    // ========================================
+    // Render: Recent Posts
+    // ========================================
+    function renderRecent() {
+      const container = document.getElementById('recentList');
+      container.innerHTML = posts.slice(0, 4).map(p => `
+        <li>
+          <a href="#">${p.title}</a>
+          <div class="date">${p.date}</div>
+        </li>
+      `).join('');
+    }
+
+    // ========================================
+    // Render: Tag Cloud
+    // ========================================
+    function renderTags() {
+      const container = document.getElementById('tagCloud');
+      container.innerHTML = tags.map(t =>
+        '<span class="tag ' + (state.tag === t ? 'active' : '') + '" data-tag="' + t + '">' + t + '</span>'
+      ).join('');
+    }
+
+    // ========================================
+    // Render: Pagination
+    // ========================================
+    function renderPagination() {
+      const container = document.querySelector('.pagination');
+      const total = totalPages();
+      const page = state.page;
+
+      if (total <= 1) {
+        container.innerHTML = '';
+        return;
+      }
+
+      let html = '';
+      html += '<a href="#" data-page="' + (page - 1) + '"' + (page <= 1 ? ' style="pointer-events:none;opacity:0.4"' : '') + '>&laquo;</a>';
+      for (let i = 1; i <= total; i++) {
+        html += i === page
+          ? '<span class="active">' + i + '</span>'
+          : '<a href="#" data-page="' + i + '">' + i + '</a>';
+      }
+      html += '<a href="#" data-page="' + (page + 1) + '"' + (page >= total ? ' style="pointer-events:none;opacity:0.4"' : '') + '>&raquo;</a>';
+
+      container.innerHTML = html;
+    }
+
+    // ========================================
+    // Render: Active Filter Chips
+    // ========================================
+    function renderFilterBar() {
+      const container = document.getElementById('filterBar');
+      const chips = [];
+      if (state.category) chips.push({ type: 'category', label: '分类: ' + state.category });
+      if (state.tag) chips.push({ type: 'tag', label: '标签: ' + state.tag });
+      if (state.query) chips.push({ type: 'search', label: '搜索: "' + state.query + '"' });
+
+      container.innerHTML = chips.map(c =>
+        '<span class="filter-chip" data-type="' + c.type + '">' + c.label + ' <span class="close">&times;</span></span>'
+      ).join('');
+    }
+
+    // ========================================
+    // Render: Empty State
+    // ========================================
+    function emptyStateHTML() {
+      return '<div class="empty-state">' +
+        '<div class="icon">🔍</div>' +
+        '<p>没有找到匹配的文章</p>' +
+        '<p class="hint">试试其他关键词或筛选条件</p>' +
+        '<button class="clear-btn" id="clearFiltersBtn">清除所有筛选</button>' +
+        '</div>';
+    }
+
+    // ========================================
+    // Update Post Count
+    // ========================================
+    function updatePostCount() {
+      const el = document.querySelector('.posts-header .count');
+      el.textContent = '共 ' + getFilteredPosts().length + ' 篇';
+    }
+
+    // ========================================
+    // Full Render
+    // ========================================
+    function renderAll() {
+      renderPosts();
+      renderCategories();
+      renderTags();
+      renderPagination();
+      renderFilterBar();
+      updatePostCount();
+    }
+
+    // ========================================
+    // Filter Actions
+    // ========================================
+    function setCategory(name) {
+      closeModal();
+      state.category = state.category === name ? '' : name;
+      state.page = 1;
+      renderAll();
+    }
+
+    function setTag(name) {
+      closeModal();
+      state.tag = state.tag === name ? '' : name;
+      state.page = 1;
+      renderAll();
+    }
+
+    function clearFilters() {
+      state.category = '';
+      state.tag = '';
+      state.query = '';
+      state.page = 1;
+      document.getElementById('searchInput').value = '';
+      renderAll();
+    }
+
+    // ========================================
+    // Modal: Post Detail
+    // ========================================
+    function openModal(id) {
+      const post = posts.find(p => p.id === id);
+      if (!post) return;
+
+      const overlay = document.getElementById('modalOverlay');
+      overlay.querySelector('.modal-cover').textContent = post.cover;
+      overlay.querySelector('.modal-title').textContent = post.title;
+      overlay.querySelector('.modal-body').innerHTML = post.content;
+
+      const meta = overlay.querySelector('.modal-meta');
+      meta.innerHTML = '<span>HE</span>' +
+        '<span>·</span>' +
+        '<span>' + post.date + '</span>' +
+        '<span>·</span>' +
+        '<span>' + post.readingTime + ' min read</span>' +
+        '<span>·</span>' +
+        post.tags.map(t => '<span class="tag" data-tag="' + t + '">' + t + '</span>').join(' · ');
+
+      overlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      const overlay = document.getElementById('modalOverlay');
+      overlay.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    // ========================================
+    // Theme Toggle
+    // ========================================
+    const themeToggle = document.getElementById('themeToggle');
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    if (savedTheme === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      themeToggle.textContent = '☀️';
+    }
+
+    themeToggle.addEventListener('click', () => {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      const next = isDark ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+      themeToggle.textContent = isDark ? '🌙' : '☀️';
+    });
+
+    // ========================================
+    // Hamburger Menu
+    // ========================================
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('navLinks');
+    hamburger.addEventListener('click', () => {
+      navLinks.classList.toggle('open');
+    });
+
+    // ========================================
+    // Scroll Events (Progress + Top Button)
+    // ========================================
+    const scrollTopBtn = document.getElementById('scrollTop');
+    const progressBar = document.getElementById('readingProgress');
+
+    window.addEventListener('scroll', function () {
+      var scrollY = window.scrollY;
+      var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      progressBar.style.width = docHeight > 0 ? (scrollY / docHeight) * 100 + '%' : '0%';
+      scrollTopBtn.classList.toggle('show', scrollY > 400);
+    }, { passive: true });
+
+    scrollTopBtn.addEventListener('click', function () {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // ========================================
+    // Newsletter Form
+    // ========================================
+    document.getElementById('newsletterForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      var email = e.target.querySelector('input').value;
+      alert('🎉 订阅成功！我们将发送确认邮件至 ' + email);
+      e.target.reset();
+    });
+
+    // ========================================
+    // Search (Debounced)
+    // ========================================
+    document.getElementById('searchInput').addEventListener('input', function (e) {
+      clearTimeout(state.searchTimer);
+      state.searchTimer = setTimeout(function () {
+        state.query = e.target.value.trim();
+        state.page = 1;
+        renderAll();
+      }, 300);
+    });
+
+    // ========================================
+    // Global Click Delegation
+    // ========================================
+    document.addEventListener('click', function (e) {
+      // 1. Tag click (filter by tag)
+      var tagEl = e.target.closest('[data-tag]');
+      if (tagEl && !e.target.closest('.filter-chip')) {
+        setTag(tagEl.dataset.tag);
+        return;
+      }
+
+      // 2. Category click
+      var catItem = e.target.closest('.category-list li');
+      if (catItem) {
+        e.preventDefault();
+        setCategory(catItem.dataset.category);
+        return;
+      }
+
+      // 3. Post card click (open modal)
+      var card = e.target.closest('.post-card');
+      if (card && !e.target.closest('[data-tag]')) {
+        e.preventDefault();
+        var id = parseInt(card.dataset.id, 10);
+        openModal(id);
+        return;
+      }
+
+      // 4. Pagination
+      var pageLink = e.target.closest('.pagination a');
+      if (pageLink) {
+        e.preventDefault();
+        var page = parseInt(pageLink.dataset.page, 10);
+        if (page && page !== state.page) {
+          state.page = page;
+          renderAll();
+          document.querySelector('.posts-header').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        return;
+      }
+
+      // 5. Filter chip close
+      var chip = e.target.closest('.filter-chip');
+      if (chip) {
+        var type = chip.dataset.type;
+        if (type === 'category') state.category = '';
+        else if (type === 'tag') state.tag = '';
+        else if (type === 'search') { state.query = ''; document.getElementById('searchInput').value = ''; }
+        state.page = 1;
+        renderAll();
+        return;
+      }
+
+      // 6. Clear filters button
+      if (e.target.id === 'clearFiltersBtn') {
+        clearFilters();
+        return;
+      }
+
+      // 7. Modal close button
+      if (e.target.closest('.modal-close')) {
+        closeModal();
+        return;
+      }
+
+      // 8. Click outside modal
+      if (e.target.classList.contains('modal-overlay')) {
+        closeModal();
+        return;
+      }
+    });
+
+    // ========================================
+    // Keyboard: Escape to close modal
+    // ========================================
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') closeModal();
+    });
+
+    // ========================================
+    // Init
+    // ========================================
+    renderPosts();
+    renderCategories();
+    renderRecent();
+    renderTags();
+    renderPagination();
+    updatePostCount();
+  </script>
+</body>
+</html>
