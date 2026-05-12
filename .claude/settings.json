@@ -1,6 +1,6 @@
 {
   "statusLine": {
     "type": "command",
-    "command": "echo \"${cwd} | ${model} | ${contextProgress}%\""
+    "command": "powershell -NoProfile -File .claude/statusline.ps1"
   }
 }
